@@ -19,17 +19,20 @@ class Admin extends CI_Controller {
 	 * @see https://codeigniter.com/userguide3/general/urls.html
 	 */
 
-	function __construct() {
+	public function __construct() {
         parent::__construct();
         $this->load->model(array('M_admin','M_utama'));
+        $this->load->library('session');
+		if ($this->session->userdata('role') != "1") {
+			redirect(base_url());
+		}
     }
 
-	public function index() 
-	{
+	public function index() {
 		$this->load->view('admin/structure/header');
 		$this->load->view('admin/structure/navbar');
 		$this->load->view('admin/structure/sidebar');
-		$this->load->view('admin/pages/dashboard');
+		$this->load->view('admin/structure/body');
 		$this->load->view('admin/structure/footer');
 	}
 
@@ -124,6 +127,4 @@ class Admin extends CI_Controller {
 		echo json_encode($data);
 
 	}
-
-
 }

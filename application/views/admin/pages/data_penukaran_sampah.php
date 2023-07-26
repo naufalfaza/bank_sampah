@@ -92,6 +92,7 @@
                   <div class="col-md-12 text-center">
                       <input type="hidden" id="id_hd" value="0">
                       <input type="hidden" id="nm_siswa">
+                      <input type="hidden" id="kategori">
                       <select class="form-control" id="id_user">
                           <option></option>
                           <?php foreach ($this->M_admin->data_siswa("")->result() as $k) { ?>
@@ -104,7 +105,7 @@
           <div class="col-md-2">
               <div class="form-group row">
                   <div class="col-sm-12">
-                      <select class="form-control" name="kategori" id="kategori" style="height: 40px">
+                      <select class="form-control" name="kategori" id="id_sampah_kat" style="height: 40px">
                           <option></option>
                           <?php foreach ($this->M_admin->data_jenis_sampah("")->result() as $k) { ?>
                               <option value="<?= $k->id_sampah ?>"><?= $k->kategori ?></option>
@@ -180,7 +181,7 @@
                   <div class="col-md-6">
                       <b><i>Catatan : </i></b>
                       <ul>
-                          <li>Ubah Data   &nbsp;&nbsp;: Pilih item yang akan di ubah lalu tekan tombol ubah</li>
+                          <!-- <li>Ubah Data   &nbsp;&nbsp;: Pilih item yang akan di ubah lalu tekan tombol ubah</li> -->
                           <li>Hapus Data  : Pilih item yang akan dihapus lalu klik delete pada keyboard</li>
                       </ul>
                   </div>
@@ -199,7 +200,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" id="simpan_jenis_sampah"><i class="fas fa-download"></i> Simpan</button>
+        <button type="button" class="btn btn-primary" id="simpan_penukaran_sampah"><i class="fas fa-download"></i> Simpan</button>
       </div>
     </div>
   </div>

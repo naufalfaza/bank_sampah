@@ -31,10 +31,20 @@ class M_utama extends CI_Model
 
     // ----------------------------------------------------------------------------- //
 
-    // GEMERATE KODE KODE PROSES
+    // GEMERATE KODE KODE SAMPAH
     function id_sampah($object)
     {
         $this->db->select("(SELECT MAX(id_sampah) FROM tbl_jenis_sampah WHERE id_sampah LIKE '$object%') AS id" , FALSE);
+        $query = $this->db->get();
+        $row = $query->row();
+        $id = (int) substr($row->id,11,4); $id++;
+        return $new = $object.sprintf("%04s", $id);
+    }
+
+    // GEMERATE KODE KODE TRANSAKSI
+    function id_transaksi($object)
+    {
+        $this->db->select("(SELECT MAX(id_transaksi) FROM tbl_transaksi WHERE id_transaksi LIKE '$object%') AS id" , FALSE);
         $query = $this->db->get();
         $row = $query->row();
         $id = (int) substr($row->id,11,4); $id++;

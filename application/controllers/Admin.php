@@ -106,10 +106,10 @@ class Admin extends CI_Controller {
 			$id_user = $this->input->post('id_user');
 			$data = $this->M_admin->data_siswa($id_user)->row();
 			$data = array('nama' => $data->nama);
-		}elseif ($this->input->get('aksi') == "harga_jenis_sampah") {
+		}elseif ($this->input->get('aksi') == "jenis_sampah") {
 			$id_sampah = $this->input->post('id_sampah');
 			$data = $this->M_admin->data_jenis_sampah($id_sampah)->row();
-			$data = array('harga' => rupiah($data->harga));
+			$data = array('kategori' => $data->kategori,'harga' => rupiah($data->harga));
 		}elseif ($this->input->get('aksi') == "hitung_satuan") {
 			$qty = $this->input->post('qty');
 			$harga = $this->input->post('harga');
@@ -119,11 +119,40 @@ class Admin extends CI_Controller {
 		}elseif ($this->input->get('aksi') == "hitung_total") {
 			$count = $this->input->post('count');
 			$data = array('total' => rupiah($count));
+		}else{
+			
 		}
 
 		echo json_encode($data);
 
 	}
 
+	public function transaksi_penukaran_sampah()
+	{
+		// INPUT DATA ITEM
+		$data = json_decode($this->input->post('data_tbl_transaksi'));
+		foreach ($data as $d) 
+		{
+			$harga = str_replace(".", "", $d[5]);
+			$jumlah = str_replace(".", "", $d[6]);
+
+			$data = array(
+				"id_transaksi" => $this->M_utama->id_transaksi('TRX_SAMPAH-'),
+				"id_user" => $d[1],
+				"jenis_sampah" => $d[3],
+				"harga" => $harga,
+				"jumlah" => $jumlah,
+				"satuan" => $d[4],
+				"tgl_record" => date("Y-m-d"),
+				"jam_record" => date("H:i:s"),
+			);
+			$table = "tbl_transaksi";
+			$this->M_utama->input_data($data, $table);
+
+		}
+
+		echo json_encode(1);
+
+	}
 
 }

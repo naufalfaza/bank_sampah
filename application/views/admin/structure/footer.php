@@ -133,15 +133,50 @@
         });
     });
 
-    $("#kategori").change(function(){
+    // FUNGSI PADA SAAT MENGKLIK BUTTON UPDATE TABLE (BPNU)
+    $('#simpan_penukaran_sampah').on("click",function(){
+      Swal.fire({
+        title: 'Apakah Anda Yakin?',
+        text: "Akan Melakukan Transaksi Ini",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ya,Yakin'
+      }).then((result) => {
+        if (result.isConfirmed) {
+
+          var data = [];
+
+          for(var i = 0; i < tbl_transaksi.rows().count();i++){
+            data.push([tbl_transaksi.rows().data().toArray()[i][1],tbl_transaksi.rows().data().toArray()[i][3],tbl_transaksi.rows().data().toArray()[i][4],tbl_transaksi.rows().data().toArray()[i][5],tbl_transaksi.rows().data().toArray()[i][6]]);
+          }
+
+          // DATA
+          $.ajax({
+            url:"<?=base_url('Admin/transaksi_penukaran_sampah')?>",
+            dataType : "json",
+            method : "post",
+            data : {data_tbl_transaksi:JSON.stringify(data)},
+            success : function(response){
+              // location.reload();
+              Swal.fire({position: 'center',icon: 'success',title: 'Success Input',showConfirmButton: false,timer: 1500});
+            }
+          });
+        }
+      });
+    });
+
+    $("#id_sampah_kat").change(function(){
         var id_sampah = $(this).val();
         $.ajax({
-            url : "<?= base_url('Admin/konfig_penukaran_sampah?aksi=harga_jenis_sampah') ?>",
+            url : "<?= base_url('Admin/konfig_penukaran_sampah?aksi=jenis_sampah') ?>",
             method : "POST",
             dataType : "json",
             data : {id_sampah:id_sampah},
             success: function(response){
                 $("#harga").val(response.harga);
+                $("#kategori").val(response.kategori);
             }
         });
     });
@@ -190,17 +225,17 @@
     tbl_transaksi.on("select",function(e,dt,type,indexes){
 
       // UBAH
-      $(document).on('click','tr',function assets(){
+      // $(document).on('click','tr',function assets(){
 
-        $("#id_hd").val(tbl_transaksi.rows('.selected').data().toArray()[0][0]);
-        $("#nm_siswa").val(tbl_transaksi.rows('.selected').data().toArray()[0][1]);
-        $("#kategori").val(tbl_transaksi.rows('.selected').data().toArray()[0][2]);
-        $("#qty").val(tbl_transaksi.rows('.selected').data().toArray()[0][3]);
-        $("#harga").val(tbl_transaksi.rows('.selected').data().toArray()[0][4]);
-        $("#jumlah").val(tbl_transaksi.rows('.selected').data().toArray()[0][5]);
-        $("#tambah_bpnu").html("<i class ='fas fa-edit'></i> Ubah");
-        return false;
-      });
+      //   $("#id_hd").val(tbl_transaksi.rows('.selected').data().toArray()[0][0]);
+      //   $("#nm_siswa").val(tbl_transaksi.rows('.selected').data().toArray()[0][2]);
+      //   $("#kategori").val(tbl_transaksi.rows('.selected').data().toArray()[0][3]);
+      //   $("#qty").val(tbl_transaksi.rows('.selected').data().toArray()[0][4]);
+      //   $("#harga").val(tbl_transaksi.rows('.selected').data().toArray()[0][5]);
+      //   $("#jumlah").val(tbl_transaksi.rows('.selected').data().toArray()[0][6]);
+      //   $("#tambah_bpnu").html("<i class ='fas fa-edit'></i> Ubah");
+      //   return false;
+      // });
 
       // HAPUS
       $(document).bind('keydown','del',function assets(){
@@ -251,8 +286,9 @@
           ]).draw(false);
             count = count + parseInt($("#jumlah").val().replace(/\./g,""));
             $("#id_user").val(null).trigger("change");
+            $("#id_sampah_kat").val(null).trigger("change");
             $("#nm_siswa").val("");
-            $("#kategori").val(null).trigger("change");
+            // $("#kategori").val(null).trigger("change");
             $("#qty").val("");
             $("#harga").val("");
             $("#jumlah").val("");
@@ -270,8 +306,9 @@
           ]).draw(false);
           count = count + parseInt($("#jumlah").val().replace(/\./g,""));
             $("#id_user").val(null).trigger("change");
+            $("#id_sampah_kat").val(null).trigger("change");
             $("#nm_siswa").val("");
-            $("#kategori").val(null).trigger("change");
+            // $("#kategori").val(null).trigger("change");
             $("#qty").val("");
             $("#harga").val("");
             $("#jumlah").val("");
@@ -292,6 +329,8 @@
         Swal.fire({position: 'center',icon: 'warning',title: 'Lengkapi Data Item',showConfirmButton: true,timer: 1500});
       }
     });
+
+    
     </script>
   </body>
 </html>

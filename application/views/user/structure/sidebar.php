@@ -14,7 +14,7 @@
           <img src="<?= base_url('assets/dist/img/user2-160x160.jpg') ?>" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block"><?= $this->session->userdata('name') ?></a>
+          <a href="<?= base_url('user') ?>" class="d-block"><?= $this->M_user->getWhere('tbl_detail_user', array('id_user' => $this->session->userdata('id_user')))->row()->nama ?></a>
         </div>
       </div>
 
@@ -23,27 +23,14 @@
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-          <!-- <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-database"></i>
+          <li class="nav-item">
+            <a href="<?= base_url('user') ?>" class="nav-link">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
-                Master Data
-                <i class="right fas fa-angle-left"></i>
+                Beranda
               </p>
             </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="<?= base_url('Admin/data_pengguna') ?>" class="nav-link">
-                  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Data Pengguna</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="<?= base_url('Admin/data_siswa') ?>" class="nav-link">
-                  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Data Siswa</p>
-                </a>
-              </li>
-            </ul>
-          </li> -->
+          </li>
         </ul>
       </nav>
       <!-- /.sidebar-menu -->

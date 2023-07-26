@@ -22,6 +22,7 @@ class User extends CI_Controller {
 	public function __construct() {
         parent::__construct();
         $this->load->library('session');
+		$this->load->model('M_user');
 		date_default_timezone_set("Asia/Jakarta");
 		if ($this->session->userdata('role') != "2") {
 			redirect(base_url());

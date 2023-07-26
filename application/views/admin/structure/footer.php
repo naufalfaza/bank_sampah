@@ -133,40 +133,6 @@
         });
     });
 
-    // FUNGSI PADA SAAT MENGKLIK BUTTON UPDATE TABLE (BPNU)
-    $('#simpan_penukaran_sampah').on("click",function(){
-      Swal.fire({
-        title: 'Apakah Anda Yakin?',
-        text: "Akan Melakukan Transaksi Ini",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Ya,Yakin'
-      }).then((result) => {
-        if (result.isConfirmed) {
-
-          var data = [];
-
-          for(var i = 0; i < tbl_transaksi.rows().count();i++){
-            data.push([tbl_transaksi.rows().data().toArray()[i][1],tbl_transaksi.rows().data().toArray()[i][3],tbl_transaksi.rows().data().toArray()[i][4],tbl_transaksi.rows().data().toArray()[i][5],tbl_transaksi.rows().data().toArray()[i][6]]);
-          }
-
-          // DATA
-          $.ajax({
-            url:"<?=base_url('Admin/transaksi_penukaran_sampah')?>",
-            dataType : "json",
-            method : "post",
-            data : {data_tbl_transaksi:JSON.stringify(data)},
-            success : function(response){
-              // location.reload();
-              Swal.fire({position: 'center',icon: 'success',title: 'Success Input',showConfirmButton: false,timer: 1500});
-            }
-          });
-        }
-      });
-    });
-
     $("#id_sampah_kat").change(function(){
         var id_sampah = $(this).val();
         $.ajax({
@@ -206,6 +172,22 @@
                 $("#edit_kategori").val(response.kategori);
                 $("#edit_harga").val(response.harga);
                 $("#id_sampah").val(id_sampah);
+            }
+        });
+
+
+    }
+
+    function detail_siswa(id_user)
+    {
+        $("#trx_penukaran_sampah").modal('show');
+        $.ajax({
+            url : "<?= base_url('Admin/konfig_penukaran_sampah?aksi=siswa') ?>",
+            method : "POST",
+            dataType : "json",
+            data : {id_user:id_user},
+            success: function(response){
+                $("#id_user").val(response.id_user);
             }
         });
 
@@ -328,6 +310,40 @@
       }else{
         Swal.fire({position: 'center',icon: 'warning',title: 'Lengkapi Data Item',showConfirmButton: true,timer: 1500});
       }
+    });
+
+    // FUNGSI PADA SAAT MENGKLIK BUTTON UPDATE TABLE (BPNU)
+    $('#simpan_penukaran_sampah').on("click",function(){
+      Swal.fire({
+        title: 'Apakah Anda Yakin?',
+        text: "Akan Melakukan Transaksi Ini",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ya,Yakin'
+      }).then((result) => {
+        if (result.isConfirmed) {
+
+          var data = [];
+
+          for(var i = 0; i < tbl_transaksi.rows().count();i++){
+            data.push([tbl_transaksi.rows().data().toArray()[i][1],tbl_transaksi.rows().data().toArray()[i][3],tbl_transaksi.rows().data().toArray()[i][4],tbl_transaksi.rows().data().toArray()[i][5],tbl_transaksi.rows().data().toArray()[i][6]]);
+          }
+
+          // DATA
+          $.ajax({
+            url:"<?=base_url('Admin/transaksi_penukaran_sampah')?>",
+            dataType : "json",
+            method : "post",
+            data : {data_tbl_transaksi:JSON.stringify(data)},
+            success : function(response){
+              location.reload();
+              Swal.fire({position: 'center',icon: 'success',title: 'Success Input',showConfirmButton: false,timer: 1500});
+            }
+          });
+        }
+      });
     });
 
     

@@ -18,23 +18,25 @@
                   <table id="example" class="display" style="width:100%">
                     <thead>
                         <tr>
-                            <th class="text-center">No.</th>
-                            <th class="text-center">Jenis Sampah</th>
-                            <th class="text-center">Harga Perkilo</th>
-                            <th class="text-center">#</th>
+                            <th class="text-center" width="5%">No.</th>
+                            <th class="text-center" width="50%">Nama</th>
+                            <th class="text-center">Kelas</th>
+                            <th class="text-center">No.Handphone</th>
+                            <th class="text-center" width="10%">#</th>
                         </tr>
                     </thead>
                     <tbody>
-                      <?php $no = 1; foreach ($this->M_admin->data_jenis_sampah("")->result() as $js) { ?>
+                      <?php $no = 1; foreach ($this->M_admin->data_siswa("")->result() as $js) { ?>
                         <tr>
                             <td class="text-center"><?= $no++ ?></td>
-                            <td class="text-center"><?= $js->kategori ?></td>
-                            <td class="text-center"><?= rupiah($js->harga) ?></td>
-                            <td class="text-center"><button class="btn btn-outline-info btn-sm col-md-12" onclick="edit('<?= $js->id_sampah ?>')"><i class="fas fa-pen"></i> Edit</button></td>
+                            <td class="text-center"><?= $js->nama ?></td>
+                            <td class="text-center"><?= $js->kelas ?></td>
+                            <td class="text-center"><?= $js->no_hp ?></td>
+                            <td class="text-center"><button class="btn btn-outline-info btn-sm col-md-12" onclick="detail_siswa('<?= $js->id_user ?>')"><i class="fas fa-eye"></i> Detail</button></td>
                         </tr>
                       <?php } ?>
                     </tbody>
-                </table>
+                  </table>
                 </div>
               </div>
             </div>
@@ -46,7 +48,7 @@
   </div>
 
  <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="trx_penukaran_sampah" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -57,11 +59,7 @@
       </div>
       <div class="modal-body">
         <div class="form-group row"> 
-          <div class="col-md-2">
-            <div class="form-group row text-center">
-              <label class="col-form-label col-md-12">Pilih Siswa</label>
-            </div>
-          </div>
+          <div class="col-md-1"></div>
           <div class="col-md-2">
             <div class="form-group row text-center">
               <label class="col-form-label col-md-12">Pilih Kategori</label>
@@ -87,24 +85,14 @@
               <label class="col-form-label col-md-12">#</label>
             </div>
           </div>
-          <div class="col-md-2">
-              <div class="form-group row">
-                  <div class="col-md-12 text-center">
-                      <input type="hidden" id="id_hd" value="0">
-                      <input type="hidden" id="nm_siswa">
-                      <input type="hidden" id="kategori">
-                      <select class="form-control" id="id_user">
-                          <option></option>
-                          <?php foreach ($this->M_admin->data_siswa("")->result() as $k) { ?>
-                              <option value="<?= $k->id_user ?>"><?= $k->nama ?></option>
-                          <?php } ?>
-                      </select>
-                  </div>
-              </div>
-          </div>
+          <div class="col-md-1"></div>
+          <div class="col-md-1"></div>
           <div class="col-md-2">
               <div class="form-group row">
                   <div class="col-sm-12">
+                      <input type="hidden" id="id_hd" value="0">
+                      <input type="hidden" id="id_user">
+                      <input type="hidden" id="kategori">
                       <select class="form-control" name="kategori" id="id_sampah_kat" style="height: 40px">
                           <option></option>
                           <?php foreach ($this->M_admin->data_jenis_sampah("")->result() as $k) { ?>
@@ -155,6 +143,7 @@
                   <div class="col-md-12 text-center"><button type="button" class="btn btn-outline-success col-md-12" id="tambah_bpnu"><i class="fas fa-plus"></i> Tambah</button></div>
               </div>
           </div>
+          <div class="col-md-1"></div>
           <div class="col-md-12"><hr></div>
           <div class="col-md-12">
               <div class="form-group">
@@ -163,8 +152,6 @@
                           <thead>
                               <tr>
                                   <th width="5%" class="text-center" >No.</th>
-                                  <th width="15%" class="text-center">ID User</th>
-                                  <th width="15%" class="text-center">Nama Siswa</th>
                                   <th width="10%" class="text-center">Jenis Sampah</th>
                                   <th width="5%" class="text-center">Satuan</th>
                                   <th width="15%" class="text-center">Harga</th>

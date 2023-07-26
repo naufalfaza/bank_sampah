@@ -19,17 +19,20 @@ class Admin extends CI_Controller {
 	 * @see https://codeigniter.com/userguide3/general/urls.html
 	 */
 
-	function __construct() {
+	public function __construct() {
         parent::__construct();
         $this->load->model(array('M_admin','M_utama'));
+        $this->load->library('session');
+		if ($this->session->userdata('role') != "1") {
+			redirect(base_url());
+		}
     }
 
-	public function index() 
-	{
+	public function index() {
 		$this->load->view('admin/structure/header');
 		$this->load->view('admin/structure/navbar');
 		$this->load->view('admin/structure/sidebar');
-		$this->load->view('admin/pages/dashboard');
+		$this->load->view('admin/structure/body');
 		$this->load->view('admin/structure/footer');
 	}
 
@@ -78,7 +81,7 @@ class Admin extends CI_Controller {
 
 		if ($this->input->get('aksi') == "simpan") {
 			$data = array(
-				'id_sampah' => $this->M_utama->id_sampah('JNS_SAMPAH-'),
+				'id_sampah' => $this->M_utama->id_sampah('JNS-SAMPAH-'),
 				'kategori' => $kategori,
 				'harga' => $harga,
 				'tgl_record' => date("Y-m-d"),
@@ -105,7 +108,7 @@ class Admin extends CI_Controller {
 		if ($this->input->get('aksi') == "siswa") {
 			$id_user = $this->input->post('id_user');
 			$data = $this->M_admin->data_siswa($id_user)->row();
-			$data = array('nama' => $data->nama);
+			$data = array('id_user' => $data->id_user,'nama' => $data->nama);
 		}elseif ($this->input->get('aksi') == "jenis_sampah") {
 			$id_sampah = $this->input->post('id_sampah');
 			$data = $this->M_admin->data_jenis_sampah($id_sampah)->row();
@@ -119,13 +122,12 @@ class Admin extends CI_Controller {
 		}elseif ($this->input->get('aksi') == "hitung_total") {
 			$count = $this->input->post('count');
 			$data = array('total' => rupiah($count));
-		}else{
-			
 		}
 
 		echo json_encode($data);
 
 	}
+
 
 	public function transaksi_penukaran_sampah()
 	{
@@ -133,26 +135,23 @@ class Admin extends CI_Controller {
 		$data = json_decode($this->input->post('data_tbl_transaksi'));
 		foreach ($data as $d) 
 		{
-			$harga = str_replace(".", "", $d[5]);
-			$jumlah = str_replace(".", "", $d[6]);
+			$harga = str_replace(".", "", $d[3]);
+			$jumlah = str_replace(".", "", $d[4]);
 
 			$data = array(
-				"id_transaksi" => $this->M_utama->id_transaksi('TRX_SAMPAH-'),
-				"id_user" => $d[1],
-				"jenis_sampah" => $d[3],
+				'id_transaksi' => $this->M_utama->id_transaksi('TRX-SAMPAH-'),
+				"id_user" => $d[0],
+				"jenis_sampah" => $d[1],
+				"satuan" => $d[2],
 				"harga" => $harga,
 				"jumlah" => $jumlah,
-				"satuan" => $d[4],
 				"tgl_record" => date("Y-m-d"),
 				"jam_record" => date("H:i:s"),
 			);
 			$table = "tbl_transaksi";
-			$this->M_utama->input_data($data, $table);
-
+			$this->M_utama->input_data($data,$table);
 		}
 
 		echo json_encode(1);
-
 	}
-
 }
